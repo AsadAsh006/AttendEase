@@ -1,45 +1,38 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import AppStack from './src/navigation/stack/AppStack'
+import { Provider, useDispatch } from 'react-redux'
+import store from './src/redux/store'
+import { loadSubjects } from './src/redux/subjectsSlice'
+import { loadStudents } from './src/redux/studentsSlice'
+import { loadAttendance } from './src/redux/attendanceSlice'
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+const AppContent = () => {
+  const dispatch = useDispatch()
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+  
+    dispatch(loadSubjects() as any)
+    dispatch(loadStudents() as any)
+    dispatch(loadAttendance() as any)
+  }, [dispatch])
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <NavigationContainer>
+      <AppStack/>
+    </NavigationContainer>
+  )
+}
+
+const App = () => {
+  return (
+    <Provider store={store}>
       <AppContent />
-    </SafeAreaProvider>
-  );
+    </Provider>
+  )
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+export default App
 
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
+const styles = StyleSheet.create({})
